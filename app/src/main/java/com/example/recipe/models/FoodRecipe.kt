@@ -1,6 +1,11 @@
 package com.example.recipe.models
 
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class FoodRecipe(
-    val results: List<Result>,
+    @Json(name = "results")
+    val results: List<Result>
 )

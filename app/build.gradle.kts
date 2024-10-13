@@ -81,11 +81,12 @@ dependencies {
     // Annotation processor
     ksp(libs.androidx.lifecycle.compiler)
     // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
+//    implementation(libs.retrofit)
     // Moshi
+    implementation(libs.converter.moshi)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
     //dagger-hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
