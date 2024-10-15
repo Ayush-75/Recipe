@@ -1,4 +1,4 @@
-package com.example.recipe
+package com.example.recipe.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface RecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipes(recipesEntity: RecipesEntity)
+    suspend fun insertRecipes(recipesEntity: RecipesEntity)
 
     @Query("SELECT * FROM recipes_table ORDER BY id ASC")
     fun recipes(): Flow<List<RecipesEntity>>
