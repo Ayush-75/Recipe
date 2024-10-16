@@ -1,12 +1,13 @@
 package com.example.recipe.data.database
 
+import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.example.recipe.models.FoodRecipe
-import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import javax.inject.Inject
 
-class RecipesTypeConverter @Inject constructor(private val moshi: Moshi) {
+@ProvidedTypeConverter
+class RecipesTypeConverter @Inject constructor(val moshi: Moshi) {
 
 
     private val foodRecipeAdapter = moshi.adapter(FoodRecipe::class.java)

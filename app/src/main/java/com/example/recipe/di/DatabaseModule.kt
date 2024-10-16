@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.example.recipe.data.database.RecipeDao
 import com.example.recipe.data.database.RecipesDatabase
 import com.example.recipe.data.database.RecipesTypeConverter
-import com.example.recipe.utils.Constant.Companion.DATABASE_NAME
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -19,23 +18,39 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
-    @Provides
     @Singleton
-    fun provideRecipesDatabase(
-        @ApplicationContext context: Context,
-        moshi: Moshi
-    ): RecipesDatabase {
-        return Room.databaseBuilder(
-            context,
-            RecipesDatabase::class.java,
-            "recipes_database"
-        ).addTypeConverter(RecipesTypeConverter(moshi))
+    @Provides
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
             .build()
     }
 
     @Provides
     @Singleton
-    fun provide(database: RecipesDatabase) : RecipeDao {
+    fun provideTypeConverter(moshi: Moshi): RecipesTypeConverter {
+        return RecipesTypeConverter(moshi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRecipesDatabase(
+        @ApplicationContext context: Context,
+        recipesTypeConverter: RecipesTypeConverter
+    ): RecipesDatabase {
+        return Room.databaseBuilder(
+            context,
+            RecipesDatabase::class.java,
+            "recipes_database"
+        )
+            .addTypeConverter(recipesTypeConverter)
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provide(database: RecipesDatabase): RecipeDao {
         return database.recipesDao()
     }
 }

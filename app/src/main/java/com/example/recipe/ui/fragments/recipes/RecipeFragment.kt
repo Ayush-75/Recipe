@@ -1,18 +1,22 @@
 package com.example.recipe.ui.fragments.recipes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.recipe.R
 import com.example.recipe.viewmodels.MainViewModel
 import com.example.recipe.adapters.RecipesAdapter
 import com.example.recipe.databinding.FragmentRecipeBinding
 import com.example.recipe.utils.Constant.Companion.API_KEY
 import com.example.recipe.utils.NetworkResult
+import com.example.recipe.utils.observeOnce
 import com.example.recipe.viewmodels.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,14 +35,35 @@ class RecipeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.mainViewModel = mainViewModel
 
         setUpRecyclerView()
-        requireApiData()
+//        requireApiData()
+        readDatabase()
+
+        binding.recipeFab.setOnClickListener {
+            findNavController().navigate(R.id.action_recipeFragment_to_recipeBottomSheet)
+        }
 
         return binding.root
     }
 
+    private fun readDatabase() {
+        mainViewModel.readRecipe.observeOnce(viewLifecycleOwner) { database ->
+            if (database.isNotEmpty()) {
+                Log.d("Recipe Fragment", "readDatabase: localdatabase Called ")
+                mAdapter.setData(database[0].foodRecipe)
+                stopShimmerEffect()
+            } else {
+                requireApiData()
+            }
+        }
+
+    }
+
     private fun requireApiData() {
+        Log.d("Recipe Fragment", "requireApiData: api request Called ")
         mainViewModel.getRecipes(recipesViewModel.applyQuery())
         mainViewModel.recipesResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -62,7 +87,6 @@ class RecipeFragment : Fragment() {
             }
         }
     }
-
 
 
     private fun setUpRecyclerView() {
@@ -89,5 +113,10 @@ class RecipeFragment : Fragment() {
             recyclerView.visibility = View.VISIBLE
 
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
