@@ -21,7 +21,7 @@ data class Result(
     @Json(name = "id")
     val id: Int,
     @Json(name = "image")
-    val image: String,
+    val image: String?,
     @Json(name = "readyInMinutes")
     val readyInMinutes: Int,
     @Json(name = "sourceName")

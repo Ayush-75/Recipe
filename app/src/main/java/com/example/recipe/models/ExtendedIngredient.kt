@@ -11,7 +11,7 @@ data class ExtendedIngredient(
     @Json(name = "consistency")
     val consistency: String,
     @Json(name = "image")
-    val image: String,
+    val image: String?,
     @Json(name = "name")
     val name: String,
     @Json(name = "original")

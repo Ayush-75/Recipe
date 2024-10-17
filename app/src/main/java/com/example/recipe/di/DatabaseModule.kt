@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.recipe.data.database.RecipeDao
 import com.example.recipe.data.database.RecipesDatabase
 import com.example.recipe.data.database.RecipesTypeConverter
+import com.example.recipe.utils.Constant.Companion.DATABASE_NAME
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -40,7 +41,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             RecipesDatabase::class.java,
-            "recipes_database"
+            DATABASE_NAME
         )
             .addTypeConverter(recipesTypeConverter)
             .fallbackToDestructiveMigration()

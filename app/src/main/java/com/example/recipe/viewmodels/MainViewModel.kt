@@ -89,6 +89,7 @@ class MainViewModel @Inject constructor(application: Application, val repository
 
             response.isSuccessful -> {
                 val foodRecipe = response.body()
+                Log.d("MainViewModel", "foodRecipe: ${foodRecipe.toString()}")
                 return NetworkResult.Success(foodRecipe)
             }
 
