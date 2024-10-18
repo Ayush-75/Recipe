@@ -1,9 +1,13 @@
 package com.example.recipe.models
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Result(
     @Json(name = "aggregateLikes")
@@ -13,7 +17,7 @@ data class Result(
     @Json(name = "dairyFree")
     val dairyFree: Boolean,
     @Json(name = "extendedIngredients")
-    val extendedIngredients: List<ExtendedIngredient>,
+    val extendedIngredients: @RawValue List<ExtendedIngredient>,
     @Json(name = "glutenFree")
     val glutenFree: Boolean,
     @Json(name = "healthScore")
@@ -38,4 +42,4 @@ data class Result(
     val vegetarian: Boolean,
     @Json(name = "veryHealthy")
     val veryHealthy: Boolean
-)
+):Parcelable

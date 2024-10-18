@@ -1,12 +1,17 @@
 package com.example.recipe.binding_adapters
 
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.navigation.findNavController
 import coil.load
 import com.example.recipe.R
+import com.example.recipe.models.Result
+import com.example.recipe.ui.fragments.recipes.RecipeFragmentDirections
 
 @BindingAdapter("loadImageFromUrl")
 fun loadImageFromUrl(imageView: AppCompatImageView, imageUrl: String){
@@ -27,6 +32,21 @@ fun applyVeganColor(view:View,vegan: Boolean) {
             is AppCompatImageView -> {
                 view.setColorFilter(greenColor)
             }
+        }
+    }
+}
+
+@BindingAdapter("onRecipeClickListener")
+fun onRecipeClickListener(recipeRowLayout:ConstraintLayout,result: Result){
+    Log.d("onRecipeClickListener", result.toString())
+    recipeRowLayout.setOnClickListener {
+        try {
+            val action =
+                RecipeFragmentDirections.actionRecipeFragmentToDetailsActivity(result)
+            recipeRowLayout.findNavController().navigate(action)
+
+        }catch (e:Exception){
+            Log.d("onRecipeClickListener",  e.toString())
         }
     }
 }
