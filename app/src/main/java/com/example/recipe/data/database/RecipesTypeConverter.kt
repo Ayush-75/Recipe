@@ -3,6 +3,7 @@ package com.example.recipe.data.database
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.example.recipe.models.FoodRecipe
+import com.example.recipe.models.Result
 import com.squareup.moshi.Moshi
 import javax.inject.Inject
 
@@ -11,6 +12,7 @@ class RecipesTypeConverter @Inject constructor(val moshi: Moshi) {
 
 
     private val foodRecipeAdapter = moshi.adapter(FoodRecipe::class.java)
+    private val resultAdapter = moshi.adapter(Result::class.java)
 
     @TypeConverter
     fun foodRecipeToString(foodRecipe: FoodRecipe):String{
@@ -20,6 +22,16 @@ class RecipesTypeConverter @Inject constructor(val moshi: Moshi) {
     @TypeConverter
     fun stringToFoodRecipe(data:String):FoodRecipe?{
         return foodRecipeAdapter.fromJson(data)
+    }
+
+    @TypeConverter
+    fun resultToString(result: Result):String{
+        return resultAdapter.toJson(result)
+    }
+
+    @TypeConverter
+    fun stringToResult(data:String):Result?{
+        return resultAdapter.fromJson(data)
     }
 
 }

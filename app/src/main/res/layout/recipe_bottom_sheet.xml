@@ -181,7 +181,7 @@
                     android:id="@+id/gluteen_free_chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/gluteen_free" />
+                    android:text="@string/gluten_free" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/CustomChipStyle"

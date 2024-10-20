@@ -6,6 +6,7 @@ import com.example.recipe.BuildConfig
 class Constant {
     companion object{
         const val BASE_URL = "https://api.spoonacular.com"
+        const val BASE_IMAGE_URL = "https://img.spoonacular.com/ingredients_100x100/"
         const val API_KEY = BuildConfig.API_KEY
 
         const val RECIPE_RESULT_KEY = "recipeBundle"
@@ -22,6 +23,7 @@ class Constant {
         //Room
         const val RECIPE_TABLE = "recipes_table"
         const val DATABASE_NAME = "recipes_database"
+        const val FAVORITE_RECIPES_TABLE = "favorite_recipes_table"
 
         //Bottom Sheet and preferences
         const val DEFAULT_RECIPE_NUMBER = "50"

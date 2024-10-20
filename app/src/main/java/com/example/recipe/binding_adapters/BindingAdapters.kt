@@ -12,6 +12,7 @@ import coil.load
 import com.example.recipe.R
 import com.example.recipe.models.Result
 import com.example.recipe.ui.fragments.recipes.RecipeFragmentDirections
+import org.jsoup.Jsoup
 
 @BindingAdapter("loadImageFromUrl")
 fun loadImageFromUrl(imageView: AppCompatImageView, imageUrl: String){
@@ -48,5 +49,13 @@ fun onRecipeClickListener(recipeRowLayout:ConstraintLayout,result: Result){
         }catch (e:Exception){
             Log.d("onRecipeClickListener",  e.toString())
         }
+    }
+}
+
+@BindingAdapter("parseHtml")
+fun parseHtml(textView: AppCompatTextView, description: String?){
+    if (description!=null){
+        val desc = Jsoup.parse(description).text()
+        textView.text = desc
     }
 }

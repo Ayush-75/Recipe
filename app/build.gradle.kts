@@ -100,6 +100,8 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     // Material Components
     implementation (libs.material)
+    // jsoup
+    implementation(libs.jsoup)
 
 
 }
