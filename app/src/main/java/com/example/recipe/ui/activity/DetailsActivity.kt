@@ -45,29 +45,28 @@ class DetailsActivity : AppCompatActivity() {
         binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val fragments =  ArrayList<Fragment>()
-        fragments.add(OverviewFragment())
-        fragments.add(IngredientsFragment())
-        fragments.add(InstructionsFragment())
+        setUpViewPager()
 
-        val titles = ArrayList<String>()
-        titles.add("Overview")
-        titles.add("Ingredients")
-        titles.add("Instructions")
+    }
 
+    private fun setupFavoriteObserver(menuItem: MenuItem) {
+        mainViewModel.readFavRecipes.observe(this) { favoritesEntity ->
+            checkSavedRecipes(favoritesEntity, menuItem)
+        }
+    }
+
+    private fun setUpViewPager() {
+        val fragments =  listOf(OverviewFragment(),IngredientsFragment(),InstructionsFragment())
+        val titles = listOf("Overview","Ingredients","Instructions")
 
         val resultBundle = Bundle()
         resultBundle.putParcelable(RECIPE_RESULT_KEY, args.result)
 
-        val pagerAdapter = PagerAdapter(
-            resultBundle,
-            fragments,
-            this
-        )
-        binding.viewPager.isUserInputEnabled = false
+        val pagerAdapter = PagerAdapter(resultBundle, fragments, this@DetailsActivity)
         binding.viewPager.apply {
-            adapter = pagerAdapter
-        }
+            isUserInputEnabled = false
+                adapter = pagerAdapter
+            }
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = titles[position]
@@ -77,7 +76,8 @@ class DetailsActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.details_menu, menu)
         menuItem = menu!!.findItem(R.id.save_fav_recipe_menu)
-        checkSavedRecipes(menuItem)
+        setupFavoriteObserver(menuItem)
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -92,7 +92,7 @@ class DetailsActivity : AppCompatActivity() {
             } else {
                 removeFromFav(item)
             }
-            recipeSaved = !recipeSaved
+//            recipeSaved = !recipeSaved
 
             }
         return super.onOptionsItemSelected(item)
@@ -102,26 +102,19 @@ class DetailsActivity : AppCompatActivity() {
         menuItem.setIcon(redFavorite)
     }
 
-    private fun checkSavedRecipes(menuItem:MenuItem){
-        mainViewModel.readFavRecipes.observe(this){favoritesEntity ->
-            recipeSaved = false
-                for (savedRecipe in favoritesEntity){
-                    if (savedRecipe.result.id == args.result.id){
-                        changeMenuItemIcon(menuItem, R.drawable.red_favorite)
-                        savedRecipeId = savedRecipe.id
-                        recipeSaved = true
-                        menuItem.isChecked = true
-                        break
-
-                    }
-                }
-            if (!recipeSaved){
-                changeMenuItemIcon(menuItem, R.drawable.white_favorite)
-                menuItem.isChecked = false
+    private fun checkSavedRecipes(favoritesEntity: List<FavoritesEntity>,menuItem: MenuItem) {
+        val foundRecipe = favoritesEntity.find { it.result.id == args.result.id }
+                if (foundRecipe != null){
+                    changeMenuItemIcon(menuItem, R.drawable.red_favorite)
+                    menuItem.isChecked = true
+                    savedRecipeId = foundRecipe.id
+                    recipeSaved = true
+                }else{
+                    changeMenuItemIcon(menuItem, R.drawable.white_favorite)
+                    menuItem.isChecked = false
+                    recipeSaved = false
             }
         }
-    }
-
 
     private fun saveToFavorites(item: MenuItem) {
         val favoritesEntity = FavoritesEntity(
@@ -129,7 +122,7 @@ class DetailsActivity : AppCompatActivity() {
             args.result
         )
         mainViewModel.insertFavRecipes(favoritesEntity)
-//        changeMenuItemColor(item, R.color.red)
+//        changeMenuItemIcon(item, R.color.red)
         showSnackbar("Recipe Saved")
         recipeSaved = true
     }
