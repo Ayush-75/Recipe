@@ -21,7 +21,7 @@ interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavRecipes(favoritesEntity: FavoritesEntity)
 
-    @Query("SELECT * FROM favorite_recipes_table ORDER BY id ASC")
+    @Query("SELECT * FROM favorite_recipes_table ORDER BY id DESC")
     fun readFavRecipes():Flow<List<FavoritesEntity>>
 
     @Delete

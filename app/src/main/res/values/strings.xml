@@ -36,4 +36,8 @@
     <string name="healthy">Healthy</string>
     <string name="cheap">Cheap</string>
     <string name="save_to_favorites">Save to favorites</string>
+    <string name="no_favorites_saved_icon">no favorites saved icon</string>
+    <string name="no_favorites_recipes">No Favorites Recipes</string>
+    <string name="delete_favorites_recipes">Delete Favorites Recipes</string>
+    <string name="delete_all">Delete All</string>
 </resources>
