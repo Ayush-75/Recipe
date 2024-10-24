@@ -2,7 +2,9 @@ package com.example.recipe.data
 
 import com.example.recipe.data.database.RecipeDao
 import com.example.recipe.data.database.entities.FavoritesEntity
+import com.example.recipe.data.database.entities.FoodJokeEntity
 import com.example.recipe.data.database.entities.RecipesEntity
+import com.example.recipe.models.FoodJoke
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -20,7 +22,7 @@ class LocalDataSource @Inject constructor(
         recipeDao.insertRecipes(recipesEntity)
     }
 
-    // fav
+    // favorites
 
     fun readFavRecipes():Flow<List<FavoritesEntity>>{
         return recipeDao.readFavRecipes()
@@ -36,5 +38,15 @@ class LocalDataSource @Inject constructor(
 
     suspend fun deleteAllFavRecipes(){
         recipeDao.deleteAllFavRecipes()
+    }
+
+    // food joke
+
+    fun readFoodJoke():Flow<List<FoodJokeEntity>>{
+        return recipeDao.readFoodJoke()
+    }
+
+    suspend fun insertFoodJoke(foodJokeEntity: FoodJokeEntity){
+         recipeDao.insertFoodJoke(foodJokeEntity)
     }
 }

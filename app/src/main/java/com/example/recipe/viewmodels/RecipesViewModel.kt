@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.recipe.data.DataStoreRepository
+import com.example.recipe.data.MealAndDietType
 import com.example.recipe.utils.Constant.Companion.API_KEY
 import com.example.recipe.utils.Constant.Companion.DEFAULT_DIET_TYPE
 import com.example.recipe.utils.Constant.Companion.DEFAULT_MEAL_TYPE
@@ -17,6 +18,7 @@ import com.example.recipe.utils.Constant.Companion.QUERY_FILL_INGREDIENTS
 import com.example.recipe.utils.Constant.Companion.QUERY_NUMBER
 import com.example.recipe.utils.Constant.Companion.QUERY_SEARCH
 import com.example.recipe.utils.Constant.Companion.QUERY_TYPE
+import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -29,8 +31,7 @@ class RecipesViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) : AndroidViewModel(application) {
 
-    private var mealType = DEFAULT_MEAL_TYPE
-    private var dietType = DEFAULT_DIET_TYPE
+    private lateinit var mealAndDiet: MealAndDietType
 
     var networkStatus = false
     var backOnline = false
@@ -38,10 +39,23 @@ class RecipesViewModel @Inject constructor(
     val readMealAndDietType = dataStoreRepository.readMealAndDietType
     val readBackOnline = dataStoreRepository.readBackOnline.asLiveData()
 
-    fun saveMealAndDietType(mealType: String, mealTypeId: Int, dietType: String, dietTypeId: Int) =
+    fun saveMealAndDietType() =
         viewModelScope.launch(Dispatchers.IO) {
-            dataStoreRepository.saveMealAndDietType(mealType, mealTypeId, dietType, dietTypeId)
+            dataStoreRepository.saveMealAndDietType(
+                mealAndDiet.selectedMealType,
+                mealAndDiet.selectedMealTypeId,
+                mealAndDiet.selectedDietType,
+                mealAndDiet.selectedDietTypeId)
         }
+
+fun saveMealAndDietTypeTemp(mealType: String, mealTypeId: Int, dietType: String, dietTypeId: Int){
+    mealAndDiet = MealAndDietType(
+        mealType,
+        mealTypeId,
+        dietType,
+        dietTypeId
+    )
+}
 
     private fun saveBackOnline(backOnline: Boolean) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -69,13 +83,14 @@ class RecipesViewModel @Inject constructor(
 //    }
 
     suspend fun applyQueries(): HashMap<String, String> {
-        val mealAndDietType = readMealAndDietType.first() // This will suspend until the first value is emitted
+        // This will suspend until the first value is emitted
+//        val mealAndDietType = readMealAndDietType.first()
 
         val queries: HashMap<String, String> = HashMap()
         queries[QUERY_NUMBER] = DEFAULT_RECIPE_NUMBER
         queries[QUERY_API_KEY] = API_KEY
-        queries[QUERY_TYPE] = mealAndDietType.selectedMealType
-        queries[QUERY_DIET] = mealAndDietType.selectedDietType
+        queries[QUERY_TYPE] = mealAndDiet.selectedMealType
+        queries[QUERY_DIET] = mealAndDiet.selectedDietType
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
 

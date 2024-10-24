@@ -54,6 +54,8 @@ class FavoritesRecipeAdapter(private val requireActivity: FragmentActivity,
         val currentRecipe = favoritesRecipes[position]
         holder.bind(currentRecipe)
 
+        saveItemStateOnScroll(currentRecipe,holder)
+
         // single click
         holder.binding.favRecipesRowLayout.setOnClickListener {
             if (multiSelection) {
@@ -72,12 +74,18 @@ class FavoritesRecipeAdapter(private val requireActivity: FragmentActivity,
                 applySelection(holder, currentRecipe)
                 true
             }else{
-                multiSelection = false
-                false
+                applySelection(holder, currentRecipe)
+                true
             }
         }
+    }
 
-
+    private fun saveItemStateOnScroll(currentRecipe: FavoritesEntity,holder: ViewHolder){
+        if (selectedRecipes.contains(currentRecipe)) {
+            changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.colorPrimary)
+        } else {
+            changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor)
+        }
     }
 
     private fun applySelection(holder: ViewHolder, currentRecipe: FavoritesEntity) {
@@ -102,7 +110,10 @@ class FavoritesRecipeAdapter(private val requireActivity: FragmentActivity,
 
     private fun applyActionModeTitle(){
         when(selectedRecipes.size){
-            0-> {mActionMode.finish()}
+            0-> {
+                mActionMode.finish()
+                multiSelection = false
+            }
             1-> {mActionMode.title = "${selectedRecipes.size} item selected"}
             else -> {mActionMode.title = "${selectedRecipes.size} items selected"}
         }

@@ -40,4 +40,6 @@
     <string name="no_favorites_recipes">No Favorites Recipes</string>
     <string name="delete_favorites_recipes">Delete Favorites Recipes</string>
     <string name="delete_all">Delete All</string>
+    <string name="error">Error</string>
+    <string name="share_food_joke">Share Food Joke</string>
 </resources>
