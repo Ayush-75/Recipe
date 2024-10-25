@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.recipe.R
@@ -21,15 +22,20 @@ import java.util.Locale
 @AndroidEntryPoint
 class RecipeBottomSheet : BottomSheetDialogFragment() {
 
-    private val recipesViewModel: RecipesViewModel by viewModels()
     private var _binding: RecipeBottomSheetBinding? = null
     private val binding get() = _binding!!
+    private lateinit var recipesViewModel: RecipesViewModel
 
     // default values
     private var mealTypeChip = DEFAULT_MEAL_TYPE
     private var mealTypeChipId = 0
     private var dietTypeChip = DEFAULT_MEAL_TYPE
     private var dietTypeChipId = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        recipesViewModel = ViewModelProvider(requireActivity())[RecipesViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,18 +65,17 @@ class RecipeBottomSheet : BottomSheetDialogFragment() {
             dietTypeChipId = selectedChipId.first()
         }
 
-        binding.applyBtn.setOnClickListener{
+        binding.applyBtn.setOnClickListener {
             recipesViewModel.saveMealAndDietTypeTemp(
                 mealTypeChip,
                 mealTypeChipId,
                 dietTypeChip,
                 dietTypeChipId
             )
-
-            val action = RecipeBottomSheetDirections.actionRecipeBottomSheetToRecipeFragment(true)
+            val action =
+                RecipeBottomSheetDirections.actionRecipeBottomSheetToRecipeFragment(true)
             findNavController().navigate(action)
         }
-
 
         return binding.root
     }

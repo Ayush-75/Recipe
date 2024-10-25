@@ -20,6 +20,7 @@ import com.example.recipe.utils.Constant.Companion.PREFERENCE_MEAL_TYPE_ID
 import com.example.recipe.utils.Constant.Companion.PREFERENCE_NAME
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -27,7 +28,7 @@ import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore(PREFERENCE_NAME)
 
-@ActivityRetainedScoped
+@ViewModelScoped
 class DataStoreRepository @Inject constructor(@ApplicationContext private val context: Context) {
 
 

@@ -1,6 +1,7 @@
 package com.example.recipe.viewmodels
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
@@ -33,6 +34,7 @@ class RecipesViewModel @Inject constructor(
 
     private lateinit var mealAndDiet: MealAndDietType
 
+
     var networkStatus = false
     var backOnline = false
 
@@ -41,58 +43,57 @@ class RecipesViewModel @Inject constructor(
 
     fun saveMealAndDietType() =
         viewModelScope.launch(Dispatchers.IO) {
-            dataStoreRepository.saveMealAndDietType(
-                mealAndDiet.selectedMealType,
-                mealAndDiet.selectedMealTypeId,
-                mealAndDiet.selectedDietType,
-                mealAndDiet.selectedDietTypeId)
+            if (this@RecipesViewModel::mealAndDiet.isInitialized)  {
+                dataStoreRepository.saveMealAndDietType(
+                    mealAndDiet.selectedMealType,
+                    mealAndDiet.selectedMealTypeId,
+                    mealAndDiet.selectedDietType,
+                    mealAndDiet.selectedDietTypeId
+                )
+            }
         }
 
-fun saveMealAndDietTypeTemp(mealType: String, mealTypeId: Int, dietType: String, dietTypeId: Int){
-    mealAndDiet = MealAndDietType(
-        mealType,
-        mealTypeId,
-        dietType,
-        dietTypeId
-    )
-}
+    fun saveMealAndDietTypeTemp(
+        mealType: String,
+        mealTypeId: Int,
+        dietType: String,
+        dietTypeId: Int
+    ) {
+        mealAndDiet = MealAndDietType(
+            mealType,
+            mealTypeId,
+            dietType,
+            dietTypeId
+        )
+    }
+
 
     private fun saveBackOnline(backOnline: Boolean) =
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepository.saveBackOnline(backOnline)
         }
 
-//    fun applyQueries(): HashMap<String, String> {
-//        val queries: HashMap<String, String> = HashMap()
-//
-//        viewModelScope.launch {
-//            readMealAndDietType.collect { value ->
-//                mealType = value.selectedMealType
-//                dietType = value.selectedDietType
-//            }
-//        }
-//
-//        queries[QUERY_NUMBER] = DEFAULT_RECIPE_NUMBER
-//        queries[QUERY_API_KEY] = API_KEY
-//        queries[QUERY_TYPE] = mealType
-//        queries[QUERY_DIET] = dietType
-//        queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
-//        queries[QUERY_FILL_INGREDIENTS] = "true"
-//
-//        return queries
-//    }
 
-    suspend fun applyQueries(): HashMap<String, String> {
+    fun applyQueries(): HashMap<String, String> {
         // This will suspend until the first value is emitted
 //        val mealAndDietType = readMealAndDietType.first()
 
+
         val queries: HashMap<String, String> = HashMap()
+
         queries[QUERY_NUMBER] = DEFAULT_RECIPE_NUMBER
         queries[QUERY_API_KEY] = API_KEY
-        queries[QUERY_TYPE] = mealAndDiet.selectedMealType
-        queries[QUERY_DIET] = mealAndDiet.selectedDietType
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
+
+        if (this@RecipesViewModel::mealAndDiet.isInitialized) {
+            queries[QUERY_TYPE] = mealAndDiet.selectedMealType
+            queries[QUERY_DIET] = mealAndDiet.selectedDietType
+        } else {
+            queries[QUERY_TYPE] = DEFAULT_MEAL_TYPE
+            queries[QUERY_DIET] = DEFAULT_DIET_TYPE
+        }
+
 
         return queries
     }
@@ -122,9 +123,3 @@ fun saveMealAndDietTypeTemp(mealType: String, mealTypeId: Int, dietType: String,
     }
 
 }
-
-//        else if (networkStatus){
-//            Toast.makeText(getApplication(),"Internet Connection Available",Toast.LENGTH_SHORT).show()
-//
-//        }
-
