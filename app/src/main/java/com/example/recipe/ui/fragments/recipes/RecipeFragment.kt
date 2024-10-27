@@ -55,6 +55,13 @@ class RecipeFragment : Fragment(), SearchView.OnQueryTextListener {
         recipesViewModel = ViewModelProvider(requireActivity())[RecipesViewModel::class.java]
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (mainViewModel.recyclerViewState !=null){
+            binding.recyclerView.layoutManager?.onRestoreInstanceState(mainViewModel.recyclerViewState)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -237,6 +244,7 @@ class RecipeFragment : Fragment(), SearchView.OnQueryTextListener {
 
 
     override fun onDestroyView() {
+        mainViewModel.recyclerViewState = binding.recyclerView.layoutManager?.onSaveInstanceState()
         super.onDestroyView()
         _binding = null
     }
