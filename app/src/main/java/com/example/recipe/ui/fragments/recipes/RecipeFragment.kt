@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class RecipeFragment : Fragment(), SearchView.OnQueryTextListener {
 
+    private var dataRequested = false
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
 
@@ -132,12 +133,15 @@ class RecipeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun readDatabase() {
         mainViewModel.readRecipe.observeOnce(viewLifecycleOwner) { database ->
-            if (database.isNotEmpty() && !args.backFromBottomSheet) {
+            if (database.isNotEmpty() && !args.backFromBottomSheet || database.isNotEmpty() && dataRequested) {
                 Log.d("Recipe Fragment", "readDatabase: localdatabase Called ")
                 mAdapter.setData(database[0].foodRecipe)
                 stopShimmerEffect()
             } else {
-                requireApiData()
+                if (!dataRequested) {
+                    requireApiData()
+                    dataRequested = true
+                }
             }
         }
 

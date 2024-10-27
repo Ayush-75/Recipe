@@ -14,6 +14,7 @@ import com.example.recipe.binding_adapters.parseHtml
 import com.example.recipe.databinding.FragmentOverviewBinding
 import com.example.recipe.models.Result
 import com.example.recipe.utils.Constant.Companion.RECIPE_RESULT_KEY
+import com.example.recipe.utils.retrieveParcelable
 import org.jsoup.Jsoup
 
 class OverviewFragment : Fragment() {
@@ -29,27 +30,30 @@ class OverviewFragment : Fragment() {
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
 
         val args = arguments
-        val myBundle:Result = args!!.getParcelable<Result>(RECIPE_RESULT_KEY) as Result
+        val myBundle:Result? = args!!.retrieveParcelable(RECIPE_RESULT_KEY) as Result?
 
-        with(binding) {
-            mainImageView.load(myBundle.image)
-            titleTextView.text = myBundle.title
-            likesTextView.text = myBundle.aggregateLikes.toString()
-            timeTextView.text = myBundle.readyInMinutes.toString()
+        if (myBundle != null) {
+
+            with(binding) {
+                mainImageView.load(myBundle.image)
+                titleTextView.text = myBundle.title
+                likesTextView.text = myBundle.aggregateLikes.toString()
+                timeTextView.text = myBundle.readyInMinutes.toString()
 //            myBundle?.summary?.let {
 //                val summary = Jsoup.parse(it).text()
 //                summaryTextView.text = summary
 //            }
 
-            parseHtml(summaryTextView, myBundle.summary)
+                parseHtml(summaryTextView, myBundle.summary)
 
-            updateColors(myBundle.vegetarian,vegetarianTextView,vegetarianImageView)
-            updateColors(myBundle.vegan,veganTextView,veganImageView)
-            updateColors(myBundle.cheap,cheapTextView,cheapImageView)
-            updateColors(myBundle.dairyFree,dairyFreeTextView,dairyFreeImageView)
-            updateColors(myBundle.glutenFree,glutenFreeTextView,glutenFreeImageView)
-            updateColors(myBundle.veryHealthy,healthyTextView,healthyImageView)
+                updateColors(myBundle.vegetarian, vegetarianTextView, vegetarianImageView)
+                updateColors(myBundle.vegan, veganTextView, veganImageView)
+                updateColors(myBundle.cheap, cheapTextView, cheapImageView)
+                updateColors(myBundle.dairyFree, dairyFreeTextView, dairyFreeImageView)
+                updateColors(myBundle.glutenFree, glutenFreeTextView, glutenFreeImageView)
+                updateColors(myBundle.veryHealthy, healthyTextView, healthyImageView)
 
+            }
         }
 
         return binding.root

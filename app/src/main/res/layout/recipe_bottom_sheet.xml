@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/cardBackgroundColor"
     tools:context=".ui.fragments.recipes.bottom_sheet.RecipeBottomSheet">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -14,7 +14,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="@string/meal_type"
-        android:textColor="@color/darkGray"
+        android:textColor="@color/titleColor"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +143,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="Diet Type"
-        android:textColor="@color/darkGray"
+        android:textColor="@color/titleColor"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -259,7 +259,7 @@
 
     </HorizontalScrollView>
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/apply_btn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -268,6 +268,8 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:text="Apply"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorPrimary"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

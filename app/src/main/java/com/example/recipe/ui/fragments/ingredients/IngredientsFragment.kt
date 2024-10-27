@@ -11,6 +11,7 @@ import com.example.recipe.adapters.IngredientsAdapter
 import com.example.recipe.databinding.FragmentIngredientsBinding
 import com.example.recipe.models.Result
 import com.example.recipe.utils.Constant.Companion.RECIPE_RESULT_KEY
+import com.example.recipe.utils.retrieveParcelable
 
 
 class IngredientsFragment : Fragment() {
@@ -28,7 +29,7 @@ class IngredientsFragment : Fragment() {
         _binding =  FragmentIngredientsBinding.inflate(layoutInflater, container, false)
 
         val args = arguments
-        val myBundle: Result? = args?.getParcelable(RECIPE_RESULT_KEY)
+        val myBundle: Result? = args?.retrieveParcelable(RECIPE_RESULT_KEY)
 
         setUpRecyclerView()
         myBundle?.extendedIngredients?.let { mAdapter.setData(it) }

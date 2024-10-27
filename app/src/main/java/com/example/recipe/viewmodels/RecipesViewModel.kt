@@ -1,7 +1,6 @@
 package com.example.recipe.viewmodels
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
@@ -19,10 +18,8 @@ import com.example.recipe.utils.Constant.Companion.QUERY_FILL_INGREDIENTS
 import com.example.recipe.utils.Constant.Companion.QUERY_NUMBER
 import com.example.recipe.utils.Constant.Companion.QUERY_SEARCH
 import com.example.recipe.utils.Constant.Companion.QUERY_TYPE
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

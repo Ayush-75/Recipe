@@ -10,6 +10,7 @@ import com.example.recipe.R
 import com.example.recipe.databinding.FragmentInstructionsBinding
 import com.example.recipe.models.Result
 import com.example.recipe.utils.Constant.Companion.RECIPE_RESULT_KEY
+import com.example.recipe.utils.retrieveParcelable
 
 
 class InstructionsFragment : Fragment() {
@@ -25,7 +26,7 @@ class InstructionsFragment : Fragment() {
         _binding = FragmentInstructionsBinding.inflate(inflater, container, false)
 
         val args = arguments
-        val myBundle:Result? = args?.getParcelable(RECIPE_RESULT_KEY)
+        val myBundle:Result? = args?.retrieveParcelable(RECIPE_RESULT_KEY)
 
         if (myBundle!=null){
             binding.instructionsWebView.webViewClient = object : WebViewClient(){}

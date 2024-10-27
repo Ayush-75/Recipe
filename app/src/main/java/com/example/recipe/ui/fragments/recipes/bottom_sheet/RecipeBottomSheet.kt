@@ -5,11 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
-import com.example.recipe.R
 import com.example.recipe.databinding.RecipeBottomSheetBinding
 import com.example.recipe.utils.Constant.Companion.DEFAULT_MEAL_TYPE
 import com.example.recipe.viewmodels.RecipesViewModel
@@ -60,7 +58,7 @@ class RecipeBottomSheet : BottomSheetDialogFragment() {
 
         binding.dietTypeChipGroup.setOnCheckedStateChangeListener { group, selectedChipId ->
             val chip = group.findViewById<Chip>(selectedChipId.first())
-            val selectedDietType = chip.text.toString().toLowerCase(Locale.ROOT)
+            val selectedDietType = chip.text.toString().lowercase(Locale.ROOT)
             dietTypeChip = selectedDietType
             dietTypeChipId = selectedChipId.first()
         }
@@ -83,7 +81,10 @@ class RecipeBottomSheet : BottomSheetDialogFragment() {
     private fun updateChip(chipId: Int, chipGroup:ChipGroup) {
         if (chipId != 0) {
             try {
-                chipGroup.findViewById<Chip>(chipId).isChecked = true
+                val targetView = chipGroup.findViewById<Chip>(chipId)
+                targetView.isChecked = true
+                chipGroup.requestChildFocus(targetView, targetView)
+//                chipGroup.findViewById<Chip>(chipId).isChecked = true
             } catch (e: Exception) {
                 Log.d("RecipeBottomSheet", e.message.toString())
             }
