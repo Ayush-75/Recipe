@@ -14,12 +14,14 @@
     <color name="red">#FF4646</color>
     <color name="yellow">#FFC114</color>
     <color name="green">#00C980</color>
+    <color name="grey">#B2B2B2</color>
 
     <!-- LIGHT THEME -->
 
     <color name="backgroundColor">@color/lightGray</color>
     <color name="placeholderColor">@color/mediumGray</color>
     <color name="itemColor">@color/darker</color>
+    <color name="vegarColor">@color/grey</color>
 
     // Custom Chip Style
     <color name="checkedChipBackgroundColor">#206200EA</color>

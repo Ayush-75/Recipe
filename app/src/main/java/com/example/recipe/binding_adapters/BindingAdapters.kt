@@ -24,14 +24,26 @@ fun loadImageFromUrl(imageView: AppCompatImageView, imageUrl: String){
 
 @BindingAdapter("applyVeganColor")
 fun applyVeganColor(view:View,vegan: Boolean) {
-     val greenColor by lazy { ContextCompat.getColor(view.context, R.color.green) }
-    if (vegan){
-        when(view){
+    val greenColor by lazy { ContextCompat.getColor(view.context, R.color.green) }
+    val defaultColor by lazy { ContextCompat.getColor(view.context, R.color.vegarColor) }
+    if (vegan) {
+        when (view) {
             is AppCompatTextView -> {
                 view.setTextColor(greenColor)
             }
+
             is AppCompatImageView -> {
                 view.setColorFilter(greenColor)
+            }
+        }
+    } else {
+        when (view) {
+            is AppCompatTextView -> {
+                view.setTextColor(defaultColor)
+            }
+
+            is AppCompatImageView -> {
+                view.setColorFilter(defaultColor)
             }
         }
     }
