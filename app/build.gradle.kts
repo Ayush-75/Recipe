@@ -1,3 +1,4 @@
+import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -13,14 +14,20 @@ plugins {
     alias(libs.plugins.firebase.crashlitycs)
 
 }
+val apiKey: String = System.getenv("API_KEY") ?: run {
+    val file = rootProject.file("local.properties")
+    val properties = Properties()
+    if (file.exists()) {
+        properties.load(FileInputStream(file))
+        properties.getProperty("apiKey") ?: "API_KEY_NOT_FOUND"
+    } else {
+        "API_KEY_NOT_FOUND"
+    }
+}
 
 android {
     namespace = "com.labs.recipe"
     compileSdk = 34
-
-    val file = rootProject.file("local.properties")
-    val properties = Properties()
-    properties.load(FileInputStream(file))
 
     defaultConfig {
         applicationId = "com.labs.recipe"
@@ -29,7 +36,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "API_KEY", properties.getProperty("apiKey"))
+        buildConfigField("String", "API_KEY", apiKey)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -67,11 +74,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     // ROOM
-    implementation (libs.androidx.room.runtime)
+    implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
-    implementation (libs.androidx.room.ktx)
+    implementation(libs.androidx.room.ktx)
     // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
@@ -100,8 +107,6 @@ dependencies {
     implementation(libs.gson)
     //Datastore
     implementation(libs.androidx.datastore.preferences)
-    // Material Components
-    implementation (libs.material)
     // jsoup
     implementation(libs.jsoup)
     // Firebase
