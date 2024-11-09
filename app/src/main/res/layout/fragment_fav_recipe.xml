@@ -7,11 +7,11 @@
 
         <variable
             name="mainViewModel"
-            type="com.example.recipe.viewmodels.MainViewModel" />
+            type="com.labs.recipe.viewmodels.MainViewModel" />
 
         <variable
             name="mAdapter"
-            type="com.example.recipe.adapters.FavoritesRecipeAdapter" />
+            type="com.labs.recipe.adapters.FavoritesRecipeAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,8 +25,6 @@
             android:id="@+id/favorites_recipe_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:setVisibility="@{mainViewModel.readFavRecipes}"
-            app:setData="@{mAdapter}"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -34,6 +32,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
+            app:setData="@{mAdapter}"
+            app:setVisibility="@{mainViewModel.readFavRecipes}"
             tools:listitem="@layout/favorites_recipes_row_layout" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -41,7 +41,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:alpha="0.5"
-            app:setVisibility="@{mainViewModel.readFavRecipes}"
             android:contentDescription="@string/no_favorites_saved_icon"
             android:src="@drawable/favorite_border"
             android:visibility="invisible"
@@ -49,7 +48,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.37" />
+            app:layout_constraintVertical_bias="0.37"
+            app:setVisibility="@{mainViewModel.readFavRecipes}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textView"
@@ -57,13 +57,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:alpha="0.5"
-            app:setVisibility="@{mainViewModel.readFavRecipes}"
             android:text="@string/no_favorites_recipes"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@+id/no_data_imageView"
             app:layout_constraintStart_toStartOf="@+id/no_data_imageView"
-            app:layout_constraintTop_toBottomOf="@+id/no_data_imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/no_data_imageView"
+            app:setVisibility="@{mainViewModel.readFavRecipes}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

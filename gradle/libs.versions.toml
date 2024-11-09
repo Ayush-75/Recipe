@@ -2,6 +2,7 @@
 agp = "8.6.1"
 coil = "2.7.0"
 datastorePreferences = "1.1.1"
+firebaseBom = "33.5.1"
 gson = "2.10.1"
 hiltAndroid = "2.52"
 jsoup = "1.18.1"
@@ -26,14 +27,22 @@ kotlinPlugin = "1.8.10"
 kotlinxCoroutinesAndroid = "1.9.0"
 hilt = "2.52"
 shimmer = "0.5.0"
+googleGmsGoogleServices = "4.4.2"
+firebase-analytics = "22.1.0"
+firebase-crashlytics-gradle = "3.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+#dagger-hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -58,9 +67,9 @@ converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.r
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-#dagger-hilt
 
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -70,4 +79,7 @@ navigationSafeArgs = {id = "androidx.navigation.safeargs.kotlin", version.ref = 
 androidLibrary = {id = "com.android.library" , version.ref = "library"}
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlinPlugin"  }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+firebase-crashlitycs = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle"}
+
 

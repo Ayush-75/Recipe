@@ -9,11 +9,13 @@ plugins {
     alias(libs.plugins.devtoolKsp)
     alias(libs.plugins.hilt)
     id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.firebase.crashlitycs)
 
 }
 
 android {
-    namespace = "com.example.recipe"
+    namespace = "com.labs.recipe"
     compileSdk = 34
 
     val file = rootProject.file("local.properties")
@@ -21,7 +23,7 @@ android {
     properties.load(FileInputStream(file))
 
     defaultConfig {
-        applicationId = "com.example.recipe"
+        applicationId = "com.labs.recipe"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -102,6 +104,13 @@ dependencies {
     implementation (libs.material)
     // jsoup
     implementation(libs.jsoup)
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
 
 }
