@@ -6,7 +6,7 @@
     <data>
         <variable
             name="favoritesEntity"
-            type="com.example.recipe.data.database.entities.FavoritesEntity" />
+            type="com.labs.recipe.data.database.entities.FavoritesEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

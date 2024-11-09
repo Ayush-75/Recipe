@@ -6,7 +6,7 @@
     <data>
         <variable
             name="result"
-            type="com.example.recipe.models.Result" />
+            type="com.labs.recipe.models.Result" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
