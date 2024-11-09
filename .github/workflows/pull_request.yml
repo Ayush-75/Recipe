@@ -28,4 +28,5 @@ jobs:
       - name: Run unit tests
         env:
           API_KEY: ${{ secrets.API_KEY }}
-        run: ./gradlew clean testDebug
+        run: ./gradlew build --info --stacktrace
+#        run: ./gradlew clean testDebug
