@@ -23,29 +23,29 @@ class LocalDataSource @Inject constructor(
 
     // favorites
 
-    fun readFavRecipes():Flow<List<FavoritesEntity>>{
+    fun readFavRecipes(): Flow<List<FavoritesEntity>> {
         return recipeDao.readFavRecipes()
     }
 
-    suspend fun insertFavRecipes(favoritesEntity: FavoritesEntity){
+    suspend fun insertFavRecipes(favoritesEntity: FavoritesEntity) {
         recipeDao.insertFavRecipes(favoritesEntity)
     }
 
-    suspend fun deleteFavRecipe(favoritesEntity: FavoritesEntity){
+    suspend fun deleteFavRecipe(favoritesEntity: FavoritesEntity) {
         recipeDao.deleteFavRecipe(favoritesEntity)
     }
 
-    suspend fun deleteAllFavRecipes(){
+    suspend fun deleteAllFavRecipes() {
         recipeDao.deleteAllFavRecipes()
     }
 
     // food joke
 
-    fun readFoodJoke():Flow<List<FoodJokeEntity>>{
+    fun readFoodJoke(): Flow<List<FoodJokeEntity>> {
         return recipeDao.readFoodJoke()
     }
 
-    suspend fun insertFoodJoke(foodJokeEntity: FoodJokeEntity){
-         recipeDao.insertFoodJoke(foodJokeEntity)
+    suspend fun insertFoodJoke(foodJokeEntity: FoodJokeEntity) {
+        recipeDao.insertFoodJoke(foodJokeEntity)
     }
 }
