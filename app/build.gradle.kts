@@ -25,6 +25,10 @@ val apiKey: String = System.getenv("API_KEY") ?: run {
     }
 }
 
+println("API_KEY from environment: ${System.getenv("API_KEY")}")
+
+println("Final API_KEY value used in buildConfigField: $apiKey")
+
 android {
     namespace = "com.labs.recipe"
     compileSdk = 34
