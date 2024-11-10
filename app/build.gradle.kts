@@ -14,20 +14,12 @@ plugins {
     alias(libs.plugins.firebase.crashlitycs)
 
 }
-val apiKey: String = System.getenv("API_KEY") ?: run {
-    val file = rootProject.file("local.properties")
-    val properties = Properties()
-    if (file.exists()) {
-        properties.load(FileInputStream(file))
-        properties.getProperty("apiKey") ?: "API_KEY_NOT_FOUND"
-    } else {
-        "API_KEY_NOT_FOUND"
-    }
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()){
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
-
-println("API_KEY from environment: ${System.getenv("API_KEY")}")
-
-println("Final API_KEY value used in buildConfigField: $apiKey")
 
 android {
     namespace = "com.labs.recipe"
@@ -40,7 +32,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "API_KEY", apiKey)
+        buildConfigField("String", "API_KEY", "\"${keystoreProperties["apiKey"]}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
