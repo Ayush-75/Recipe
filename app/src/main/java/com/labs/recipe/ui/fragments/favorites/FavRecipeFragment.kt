@@ -27,7 +27,12 @@ class FavRecipeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val mainViewModel: MainViewModel by viewModels()
-    private val mAdapter:FavoritesRecipeAdapter by lazy { FavoritesRecipeAdapter(requireActivity(),mainViewModel) }
+    private val mAdapter: FavoritesRecipeAdapter by lazy {
+        FavoritesRecipeAdapter(
+            requireActivity(),
+            mainViewModel
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +43,6 @@ class FavRecipeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.mainViewModel = mainViewModel
         binding.mAdapter = mAdapter
-
 
 
 //        mainViewModel.readFavRecipes.observe(viewLifecycleOwner){favoritesEntity ->
@@ -75,7 +79,7 @@ class FavRecipeFragment : Fragment() {
             .setAction("Okay") {}.show()
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         binding.favoritesRecipeRecycler.adapter = mAdapter
         binding.favoritesRecipeRecycler.layoutManager = LinearLayoutManager(requireContext())
     }
