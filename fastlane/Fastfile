@@ -1,30 +1,101 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 default_platform(:android)
 
 platform :android do
+  # Helper method to get the correct gradle file path
+  private_lane :gradle_file_path do
+    project_dir = File.expand_path('..', Dir.pwd)
+    gradle_file = File.join(project_dir, 'app', 'build.gradle.kts')
+
+    unless File.exist?(gradle_file)
+      gradle_file = File.join(Dir.pwd, 'app', 'build.gradle.kts')
+    end
+
+    unless File.exist?(gradle_file)
+      UI.user_error!("Could not find build.gradle.kts file. Expected at: #{gradle_file}")
+    end
+
+    gradle_file
+  end
+
+  # Helper method to increment version code
+  private_lane :increment_version_code do |options|
+    gradle_file = gradle_file_path
+    UI.message("Reading from: #{gradle_file}")
+
+    s = File.read(gradle_file)
+    version_code_regex = /versionCode\s*=\s*(\d+)/
+    current_code = s[version_code_regex, 1].to_i
+    new_code = current_code + 1
+    s.gsub!(version_code_regex, "versionCode = #{new_code}")
+    File.write(gradle_file, s)
+    new_code
+  end
+
+  # Helper method to increment version name
+  private_lane :increment_version_name do |options|
+    gradle_file = gradle_file_path
+    bump_type = options[:bump_type]
+
+    s = File.read(gradle_file)
+    version_name_regex = /versionName\s*=\s*"([\d\.]+)"/
+    current_version = s[version_name_regex, 1]
+
+    major, minor, patch = current_version.split('.').map(&:to_i)
+
+    case bump_type
+    when "major"
+      major += 1
+      minor = 0
+      patch = 0
+    when "minor"
+      minor += 1
+      patch = 0
+    when "patch"
+      patch += 1
+    end
+
+    new_version = "#{major}.#{minor}.#{patch}"
+    s.gsub!(version_name_regex, "versionName = \"#{new_version}\"")
+    File.write(gradle_file, s)
+    new_version
+  end
+
+  desc "Bump patch version (0.0.X)"
+  lane :bump_patch do
+    new_code = increment_version_code
+    new_version = increment_version_name(bump_type: "patch")
+    UI.message "Updated version code to: #{new_code}"
+    UI.message "Updated version name to: #{new_version}"
+  end
+
+  desc "Bump minor version (0.X.0)"
+  lane :bump_minor do
+    new_code = increment_version_code
+    new_version = increment_version_name(bump_type: "minor")
+    UI.message "Updated version code to: #{new_code}"
+    UI.message "Updated version name to: #{new_version}"
+  end
+
+  desc "Bump major version (X.0.0)"
+  lane :bump_major do
+    new_code = increment_version_code
+    new_version = increment_version_name(bump_type: "major")
+    UI.message "Updated version code to: #{new_code}"
+    UI.message "Updated version name to: #{new_version}"
+  end
+
   desc "Deploy a new version to the Google Play"
-  lane :upload_to_play_store do
-      supply(
+  lane :deploy_to_play_store do
+    bump_patch # Default to patch version increment
+
+    supply(
       track: 'internal',
       aab: 'app/build/outputs/bundle/release/app-release.aab',
       metadata_path: 'fastlane/metadata/android',
       skip_upload_metadata: false,
       skip_upload_images: false,
       skip_upload_screenshots: false,
-      json_key: 'play_config.json',
+      json_key: 'play_config.json'
+    )
   end
 end
