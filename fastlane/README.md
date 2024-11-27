@@ -15,26 +15,34 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android test
+### android bump_patch
 
 ```sh
-[bundle exec] fastlane android test
+[bundle exec] fastlane android bump_patch
 ```
 
-Runs all the tests
+Bump patch version (0.0.X)
 
-### android beta
+### android bump_minor
 
 ```sh
-[bundle exec] fastlane android beta
+[bundle exec] fastlane android bump_minor
 ```
 
-Submit a new Beta Build to Crashlytics Beta
+Bump minor version (0.X.0)
 
-### android deploy
+### android bump_major
 
 ```sh
-[bundle exec] fastlane android deploy
+[bundle exec] fastlane android bump_major
+```
+
+Bump major version (X.0.0)
+
+### android upload_to_play_store
+
+```sh
+[bundle exec] fastlane android upload_to_play_store
 ```
 
 Deploy a new version to the Google Play
