@@ -13,7 +13,7 @@ Welcome to the Recipe App! This app is designed to help you find and manage reci
 
 ## Screenshots
 
-![Home Screen](screenshots/home_screen.png) ![Recipe List](screenshots/recipe_list.png) ![Recipe Details](screenshots/recipe_details.png) ![Add Recipe](screenshots/add_recipe.png) ![Favorite Recipes](screenshots/favorite_recipes.png)
+![Home Screen](<img src = "screenshots/recipe_list.png" width="50%"/>) ![Recipe List](screenshots/recipe_list.png) ![Recipe Details](screenshots/recipe_details.png) ![Add Recipe](screenshots/add_recipe.png) ![Favorite Recipes](screenshots/favorite_recipes.png)
 
 ## Getting Started
 
