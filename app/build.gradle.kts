@@ -113,5 +113,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
 
+    // splash screen
+    implementation(libs.androidx.core.splashscreen)
+
 
 }
