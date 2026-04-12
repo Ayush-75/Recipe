@@ -3,6 +3,7 @@ name: Deploy to Google Play Store
 on:
   push:
     branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -40,8 +41,6 @@ jobs:
       - name: Run unit tests
         run: ./gradlew clean testDebug
 
-# first test now build abb file and distribute it to google play store
-
   distribute:
     name: Deploy to Google Play Store
     needs: test
@@ -70,38 +69,40 @@ jobs:
       - name: Create keystore.properties
         run: |
           touch keystore.properties
-          echo "apiKey= ${{ secrets.API_KEY }}" >> keystore.properties 
+          echo "apiKey=${{ secrets.API_KEY }}" >> keystore.properties
 
-      - name: Grant execute permissions for gradlew  # Added this step
+      - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
-          
-      - name: Assemble release bundle
+
+      - name: Build AAB
         run: ./gradlew bundleRelease
 
       - name: Sign the release bundle
         uses: r0adkll/sign-android-release@v1
         with:
-            releaseDirectory: app/build/outputs/bundle/release
-            signingKeyBase64: ${{ secrets.RECIPE_KEYSTORE }}
-            keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-            alias: ${{ secrets.RECIPE_ALIAS }}
-            keyPassword: ${{ secrets.RECIPE_ALIAS_PASSWORD }}
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.RECIPE_KEYSTORE }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          alias: ${{ secrets.RECIPE_ALIAS }}
+          keyPassword: ${{ secrets.RECIPE_ALIAS_PASSWORD }}
 
-      - name: Setup Authorization with Google Play Store
+      - name: Setup Play Store API
         env:
           PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG }}
         run: echo $PLAY_CONFIG_JSON | base64 -di > play_config.json
 
-      - name: Setup Ruby Environment
+      # ✅ FIXED Ruby setup (no manual bundle install!)
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.6
+          ruby-version: 3.2
           bundler-cache: true
 
-      - name: Install bundler
-        run: | 
-         gem install bundler
-         bundle install
+      # ✅ Optional debug (remove later)
+      - name: Debug files
+        run: |
+          ls -la
+          bundle list
 
-      - name: Upload the release bundle to Google Play Store
+      - name: Upload to Play Store
         run: bundle exec fastlane upload_to_play_store
